@@ -1,0 +1,7 @@
+{
+  "timestamp": "2020-07-31T16:19:41.229+0000",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "BankB 异常",
+  "path": "/bank-a/updAmount"
+}

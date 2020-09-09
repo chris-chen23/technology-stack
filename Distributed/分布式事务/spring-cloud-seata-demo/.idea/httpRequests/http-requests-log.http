@@ -1,0 +1,87 @@
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=IN
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+<> 2020-08-01T121941.500.json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=IN
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=IN
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=IN
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=OUT
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=OUT
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=OUT
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+<> 2020-07-31T115838.500.json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=OUT
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+<> 2020-07-31T115456.500.json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=OUT
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+<> 2020-07-31T115349.500.json
+
+###
+
+GET http://127.0.0.1:8081/bank-a/updAmount?mode=IN
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8081/bank-a?mode=IN
+Accept: */*
+Accept: application/json
+Content-Type: application/json
+
+<> 2020-07-31T115208.404.json
+
+###
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="seata-banka" />
+        <module name="seata-bankb" />
+        <module name="registry" />
+        <module name="seata-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="registry" target="1.8" />
+      <module name="seata-banka" target="1.8" />
+      <module name="seata-bankb" target="1.8" />
+      <module name="seata-common" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="registry" options="-parameters" />
+      <module name="seata-banka" options="-parameters" />
+      <module name="seata-bankb" options="-parameters" />
+      <module name="seata-common" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,7 @@
+{
+  "timestamp": "2020-07-31T15:58:38.643+0000",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "BankBClient#updAmount(String) failed and no fallback available.",
+  "path": "/bank-a/updAmount"
+}

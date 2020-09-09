@@ -1,0 +1,222 @@
+
+概念
+	定义：所谓k8s本质上就是一组服务器集群，k8s可以在集群的各个节点上运行特定的docker容器。
+
+	k8s功能：
+		自我修复
+		弹性伸缩：实时根据服务器的并发情况，增加或者缩减容器数量
+		自动部署
+		回滚
+		服务发现和负载均衡
+		机密和配置共享管理
+		
+	k8s集群分为两类节点
+		master node:	主
+		worker node: 工作
+		
+	master节点的组件（程序）
+		apiserver: 接受客户端可k8s的指令
+		schduler：从多个woker node节点的组件中选举一个来启动服务
+		controller manager：向worker节点的kubelet发送指令
+	
+	node 节点的组件
+		kubelet：向docker发送指令管理docker容器的
+		kubeproxy：管理docker容器的网络
+		
+	etcd
+		k8s的数据库
+		用来注册节点、服务、记录账户
+		
+	核心概念
+	pod
+		pod是k8是最小部署单元
+		一个pod中可以有一个或者多个容器一组容器
+		pod又称为容器组
+	Controllers：控制器 控制pod,启动、停止、删除
+		ReplicaSet：确保预期的Pod的副本数量
+		（用得较多）Deployment：无状态应用部署
+		StatefulSet：有状态应用部署
+		DaemonSet：确保所有Node运行同一个Pod
+		Job：一次性任务
+		Cronjob：定时任务
+		
+	Services: 服务
+		将一组Pod关联起来，提供一个统一的入口
+		即使pod地址发生改变，这个统一的入口也不会变化，可以保证用户访问不受影响
+		
+	label：标签
+		一组Pod的标签
+		service通过标签和一组pod进行关联
+		
+	namespace：名称空间
+		用来隔离pod的运行环境【默认情况下，pod是可以相互访问的】
+		使用场景：
+			为不同的公司提供隔离的pod运行环境
+			为开发环境、测试环境、生产环境分别准备不同的名称空间进行隔离
+		
+	k8s是不能直接启动容器
+	
+	生产配置建议：
+		master建议3台
+		etcd >= 3 奇数个
+		worker越多越好
+实验环境
+	三个节点
+	2G内存
+	2核CPU
+
+部署单master集群
+集群规划
+	master	
+		主机名：
+	worker1
+		主机名：
+	worker2
+		主机名：
+	
+	k8s版本：1.16
+	安装方式：离线二进制
+	操作系统版本：7.7
+	
+二、初始化服务器
+	1 关闭防火墙
+	【所有节点都执行】
+		systemctl stop firewalld
+		systemctl disable firewalld
+	
+	2 关闭selinux
+		【所有节点都执行】
+		setenforce 0
+		vim /etc/selinux/config
+		
+			修改：SELINUX=disabled
+		
+	3 配置主机名
+	【所有节点都执行】
+		hostnamectl set-hostname 主机名
+			
+			
+	4 配置名称解析
+		vim /etc/hosts
+		【所有节点都执行】
+			192.168.11.63 k8s-master1
+			192.168.11.64 k8s-master2
+			192.168.11.65 k8s-node1
+			192.168.11.66 k8s-node2
+	5 配置时间同步
+		选择一个节点作为服务端，剩下的为客户端
+			master1为时间服务器的服务端
+			其他的为时间服务器的客户端
+			
+			1）配置k8s-master1
+				yum install chrony -y
+				vim /etc/chrony.conf
+				修改三项：
+					server 127.127.1.0 iburst
+					allow 192.168.11.0/24
+					local stratum 10
+				# systemctl start chronyd
+				# systemctl enable chronyd
+				检查进程是否启动
+					# ss -unl | grep 123
+			2）配置节点
+				yum install chrony -y
+				vim /etc/chrony.conf
+				修改一项：
+					server 192.168.11.63 iburst
+				# systemctl start chronyd
+				# systemctl enable chronyd
+				#chronyc sources
+					[root@localhost ~]# chronyc sources
+					210 Number of sources = 1
+					MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+					===============================================================================
+					^* 192.168.11.63                10   6    17     4   +293us[ +538us] +/- 1688us
+				
+		
+		
+		
+		
+	6 关闭交换分区
+		所有主节点都执行
+			swapoff -a
+			vim /etc/fstab
+		删除或注释最后一行
+	
+		检查是否关闭成功
+			[root@localhost ~]# free -m
+							   total        used        free      shared  buff/cache   available
+				Mem:           1831         135        1499           8         195        1517
+				Swap:             0 
+
+三、给etcd颁发证书
+	1 创建证书办颁发机构
+	2 填写表单
+	3 向证书机构申请证书
+
+	参考做法：
+	http://www.codedog.fun/2020/04/12/Kubernetes(k8s)%E4%B8%AA%E4%BA%BA%E7%AC%94%E8%AE%B0(%E6%9B%B4%E6%96%B0%E4%B8%AD)/
+	
+	###需要下载TSL安装包
+	第一步：上传TSL安装包
+	第二步：
+		tar xvf TSL.tar.gz
+		cd /root/TLS
+		vim server
+
+
+
+四、部署etcd
+	etcd需要三台虚拟机
+	master node1 node2上分别安装一个etcd
+	
+	
+	# tar xvf etcd.tar.gz
+	# mv etcd.service /usr/lib/systemctl
+	
+	
+	
+	
+	centos7 
+		systemd的服务管理脚本
+		/usr/lib/systemd/system
+		
+	centos6
+		sysV风格的服务管理脚本
+		/etc/rc.d/rcN.d
+		
+		
+	
+	
+	
+	
+	
+
+##########################################
+加密
+	对称加密：加密解密用相同的密钥
+	非对称加密：对公钥~私钥的密钥实现加解密
+	单向加密：只能加密，不能解密
+
+
+
+
+
+
+
+
+数据最好是 >= 3 奇数个 
+
+APISERVER：所有服务访问统一入口
+CrontrollerManager：维持副本期望数目
+Scheduler：负责介绍任务，选择合适的节点进行分配任务
+ETCD：键值对数据库  储存K8S集群所有重要信息（持久化）
+Kubelet：直接和容器引擎交互实现容器的生命周期管理
+Kube-proxy：负责写入规则至IPTABLES、IPVS实现服务映射访问的
+
+COREDNS：可以为集群中的SVC创建一个域名IP的对应关系解析
+DASHBOARD：给K8S提供一个B/S的机构访问体系
+INGRESS CONTROLLER:官方只能实现四层代理，INGRESS可以实现七层代理
+FEDERATION: 提供一个可以跨集群中心多K8S统一管理功能
+PROMETHEUS: 提供K8S集群的监控能力
+ELK：提供K8S集群日志统一分析介入平台
